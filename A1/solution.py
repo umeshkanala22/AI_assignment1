@@ -38,11 +38,13 @@ class Agent(object):
 
     def asr_corrector(self, environment):
         self.best_state = environment.init_state
+        print("this is the best state before training", self.best_state)
         cost = environment.compute_cost(environment.init_state)
+        print("this is the cost before  training",cost)
         node = Node(environment.init_state, cost)
         self.heap_push(node)
         self.search(environment)
-        environment.best_state = self.best_state.string
+        # environment.best_state = self.best_state.string
 
     def heap_push(self, node):
         if len(self.heap) < self.k:
@@ -65,6 +67,7 @@ class Agent(object):
                 
 
             self.best_state = heapq.top().string
+        
         self.heap=[heapq.top()]
         heapq.clear()
         while self.heap:
@@ -80,9 +83,6 @@ class Agent(object):
                     if(new_cost<node.cost):
                         new_node = Node(new_string,new_cost)
                         self.heap_push(new_node)
-            self.best_state = heapq[0].string
-
-            
-            # Add new nodes to the heap
-            # ...
-            # self.heap_push(new_node)
+        
+            environment.best_state = heapq[0].string
+            print(heapq[0].string)
