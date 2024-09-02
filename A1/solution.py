@@ -85,4 +85,4 @@ class Agent(object):
                         self.heap_push(new_node)
         
             environment.best_state = heapq[0].string
-            print(heapq[0].string)
+        print("this is the beat after update",heapq[0].string)
