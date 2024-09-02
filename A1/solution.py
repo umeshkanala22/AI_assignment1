@@ -80,7 +80,7 @@ class Agent(object):
                     if(new_cost<node.cost):
                         new_node = Node(new_string,new_cost)
                         self.heap_push(new_node)
-            self.best_state = heapq.top().string
+            self.best_state = heapq[0].string
 
             
             # Add new nodes to the heap
