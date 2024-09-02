@@ -30,7 +30,7 @@ class Node(object):
 
 class Agent(object):
     def __init__(self, phoneme_table, vocabulary) -> None:
-        self.phoneme_table = phoneme_table
+        self.phoneme_table = {value: key for key, values in phoneme_table.items() for value in values}
         self.vocabulary = vocabulary
         self.best_state = None
         self.k = 10
@@ -38,13 +38,11 @@ class Agent(object):
 
     def asr_corrector(self, environment):
         self.best_state = environment.init_state
-        print("this is the best state before training", self.best_state)
         cost = environment.compute_cost(environment.init_state)
-        print("this is the cost before  training",cost)
         node = Node(environment.init_state, cost)
         self.heap_push(node)
         self.search(environment)
-        # environment.best_state = self.best_state.string
+        environment.best_state = self.best_state
 
     def heap_push(self, node):
         if len(self.heap) < self.k:
@@ -57,32 +55,30 @@ class Agent(object):
             node = heapq.heappop(self.heap)
             currstring=node.string
             for i in range(len(currstring)):
-                if currstring[i] in self.phoneme_table:
-                    for phoneme in self.phoneme_table[currstring[i]]:
-                        new_string = currstring[:i] + phoneme + currstring[i+1:]
-                        new_cost = environment.compute_cost(new_string)
-                        if(new_cost<node.cost):
-                            new_node = Node(new_string,new_cost)
-                            self.heap_push(new_node)
-                
+                for key in self.phoneme_table:
+                    if currstring[i:i+len(key)] == key:
+                        for phoneme in self.phoneme_table[key]:
+                            new_string = currstring[:i] + phoneme + currstring[i+len(key):]
+                            new_cost = environment.compute_cost(new_string)
+                            if(new_cost<node.cost):
+                                new_node = Node(new_string,new_cost)
+                                self.heap_push(new_node)
+            self.best_state = self.heap[0].string if self.heap else None
 
-            self.best_state = heapq.top().string
-        
-        self.heap=[heapq.top()]
-        heapq.clear()
+        self.heap = [Node(self.best_state, environment.compute_cost(self.best_state))]
+        print(self.best_state)
         while self.heap:
             node = heapq.heappop(self.heap)
             currstring=node.string
-            for i in range(-1,self.vocabulary.size):
-                for j in range(i-1,self.vocabulary.size):
-                    if(i!=-1):
-                        new_string=self.vocabulary[i]+currstring
-                    if(j!=i-1):
-                        new_string=currstring+self.vocabulary[j]
-                    new_cost = environment.compute_cost(new_string)
-                    if(new_cost<node.cost):
-                        new_node = Node(new_string,new_cost)
-                        self.heap_push(new_node)
-        
-            environment.best_state = heapq[0].string
-        print("this is the beat after update",heapq[0].string)
+            for i in range(self.vocabulary.size):
+                new_string = self.vocabulary[i] + currstring
+                new_cost = environment.compute_cost(new_string)
+                if(new_cost<node.cost):
+                    new_node = Node(new_string,new_cost)
+                    self.heap_push(new_node)
+                new_string = currstring + self.vocabulary[i]
+                new_cost = environment.compute_cost(new_string)
+                if(new_cost<node.cost):
+                    new_node = Node(new_string,new_cost)
+                    self.heap_push(new_node)
+            self.best_state = self.heap[0].string if self.heap else None
