@@ -33,7 +33,7 @@ class Agent(object):
         self.phoneme_table = {value: key for key, values in phoneme_table.items() for value in values}
         self.vocabulary = vocabulary
         self.best_state = None
-        self.k = 10
+        self.k = 3
         self.heap = []
 
     def asr_corrector(self, environment):
