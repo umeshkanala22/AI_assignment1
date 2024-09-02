@@ -51,7 +51,11 @@ class Agent(object):
             heapq.heappushpop(self.heap, node)
 
     def search(self, environment):
-        while self.heap:
+        print(self.phoneme_table)
+        qw=0
+        while self.heap and qw<1000000:
+            print(qw)
+
             node = heapq.heappop(self.heap)
             currstring=node.string
             for i in range(len(currstring)):
@@ -64,10 +68,13 @@ class Agent(object):
                                 new_node = Node(new_string,new_cost)
                                 self.heap_push(new_node)
             self.best_state = self.heap[0].string if self.heap else None
+            qw=qw+1
 
         self.heap = [Node(self.best_state, environment.compute_cost(self.best_state))]
         print(self.best_state)
-        while self.heap:
+        qw=0
+        while self.heap and qw<1000000:
+            print(qw)
             node = heapq.heappop(self.heap)
             currstring=node.string
             for i in range(self.vocabulary.size):
@@ -82,3 +89,4 @@ class Agent(object):
                     new_node = Node(new_string,new_cost)
                     self.heap_push(new_node)
             self.best_state = self.heap[0].string if self.heap else None
+            qw=qw+1
