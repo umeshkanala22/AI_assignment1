@@ -64,8 +64,9 @@ class Agent(object):
         start=0
         print(self.vocabulary)
         for i in range(0,len(self.vocabulary)):
-            new_string = self.vocabulary[i] + self.node.string
+            new_string = self.vocabulary[i] +" "+ self.node.string
             new_cost = environment.compute_cost(new_string)
+            print(new_string)
             if(self.node.cost>new_cost):
                 self.node.cost=new_cost
                 self.best_state=new_string
@@ -73,7 +74,7 @@ class Agent(object):
         print("I am out of the 1st for loop",self.best_state)
                 
         for i in range(0,len(self.vocabulary)):
-            new_string = self.node.string+self.vocabulary[i]
+            new_string = self.node.string+ " "+self.vocabulary[i]
             new_cost = environment.compute_cost(new_string)
             if(self.node.cost>new_cost):
                 self.node.cost=new_cost
