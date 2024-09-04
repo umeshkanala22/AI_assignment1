@@ -39,15 +39,7 @@ class Agent(object):
                     self.phoneme_table[value].append(key)
         self.vocabulary = vocabulary
         self.best_state = None
-        self.k = 1
-        self.heap = []
         self.node = None
-
-    # def heap_push(self, node):
-    #     if len(self.heap) < self.k:
-    #         heapq.heappush(self.heap, node)
-    #     elif node.cost < self.heap[-1].cost:
-    #         self.heap[-1]=node
 
     def asr_corrector(self, environment):
         self.best_state = environment.init_state
@@ -109,22 +101,3 @@ class Agent(object):
                 self.best_state=new_string
         self.node.string=self.best_state
         print("I am out of the 2nd for loop",self.best_state)
-        
-                
-        
-            
-            # node =self.node
-            # currstring=node.string
-            # for i in range(self.vocabulary.size):
-            #     new_string = self.vocabulary[i] + currstring
-            #     new_cost = environment.compute_cost(new_string)
-            #     if(new_cost<node.cost):
-            #         new_node = Node(new_string,new_cost)
-            #         self.heap_push(new_node)
-            #     new_string = currstring + self.vocabulary[i]
-            #     new_cost = environment.compute_cost(new_string)
-            #     if(new_cost<node.cost):
-            #         new_node = Node(new_string,new_cost)
-            #         self.heap_push(new_node)
-            # self.best_state = self.heap[0].string if self.heap else None
-            # qw=qw+1
