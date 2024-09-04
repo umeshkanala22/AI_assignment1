@@ -62,33 +62,6 @@ class Agent(object):
         print(self.phoneme_table)
         isend=False
         start=0
-        while isend==False:
-            node =self.node
-            flag1=False
-            print(self.best_state)
-          
-            currstring=node.string
-            for i in range(start,len(currstring)):
-                for key in self.phoneme_table:
-                    if currstring[i:i+len(key)] == key:
-                        for phoneme in self.phoneme_table[key]:
-                            new_string = currstring[:i] + phoneme + currstring[i+len(key):]
-                            new_cost = environment.compute_cost(new_string)
-                            if(new_cost<node.cost):
-                                self.best_state=new_string
-                                print(new_string)
-                                self.node=Node(new_string,new_cost)
-                                start=i
-                                flag1=True
-                                break
-                    if flag1:
-                        break
-                if flag1:
-                    break
-            
-            if(node.string==self.node.string):
-                break
-        print("I am Out of the while loop",self.best_state)
         print(self.vocabulary)
         for i in range(0,len(self.vocabulary)):
             new_string = self.vocabulary[i] + self.node.string
@@ -107,6 +80,35 @@ class Agent(object):
                 self.best_state=new_string
         self.node.string=self.best_state
         print("I am out of the 2nd for loop",self.best_state)
+
+        while isend==False:
+            node =self.node
+            flag1=False
+            print(self.best_state)
+          
+            currstring=node.string
+            for i in range(start,len(currstring)):
+                for key in self.phoneme_table:
+                    if currstring[i:i+len(key)] == key:
+                        for phoneme in self.phoneme_table[key]:
+                            new_string = currstring[:i] + phoneme + currstring[i+len(key):]
+                            new_cost = environment.compute_cost(new_string)
+                            if(new_cost<node.cost):
+                                self.best_state=new_string
+                                print(new_string)
+                                self.node=Node(new_string,new_cost)
+                                start=i-1
+                                flag1=True
+                                break
+                    if flag1:
+                        break
+                if flag1:
+                    break
+            
+            if(node.string==self.node.string):
+                break
+        print("I am Out of the while loop",self.best_state)
+        
                 
         
             
