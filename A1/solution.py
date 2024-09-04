@@ -63,24 +63,6 @@ class Agent(object):
         isend=False
         start=0
         print(self.vocabulary)
-        for i in range(0,len(self.vocabulary)):
-            new_string = self.vocabulary[i] +" "+ self.node.string
-            new_cost = environment.compute_cost(new_string)
-            print(new_string)
-            if(self.node.cost>new_cost):
-                self.node.cost=new_cost
-                self.best_state=new_string
-        self.node.string=self.best_state
-        print("I am out of the 1st for loop",self.best_state)
-                
-        for i in range(0,len(self.vocabulary)):
-            new_string = self.node.string+ " "+self.vocabulary[i]
-            new_cost = environment.compute_cost(new_string)
-            if(self.node.cost>new_cost):
-                self.node.cost=new_cost
-                self.best_state=new_string
-        self.node.string=self.best_state
-        print("I am out of the 2nd for loop",self.best_state)
 
         while isend==False:
             node =self.node
@@ -109,6 +91,24 @@ class Agent(object):
             if(node.string==self.node.string):
                 break
         print("I am Out of the while loop",self.best_state)
+        for i in range(0,len(self.vocabulary)):
+            new_string = self.vocabulary[i] +" "+ self.node.string
+            new_cost = environment.compute_cost(new_string)
+            print(new_string)
+            if(self.node.cost>new_cost):
+                self.node.cost=new_cost
+                self.best_state=new_string
+        self.node.string=self.best_state
+        print("I am out of the 1st for loop",self.best_state)
+                
+        for i in range(0,len(self.vocabulary)):
+            new_string = self.node.string+ " "+self.vocabulary[i]
+            new_cost = environment.compute_cost(new_string)
+            if(self.node.cost>new_cost):
+                self.node.cost=new_cost
+                self.best_state=new_string
+        self.node.string=self.best_state
+        print("I am out of the 2nd for loop",self.best_state)
         
                 
         
