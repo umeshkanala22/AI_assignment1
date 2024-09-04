@@ -89,24 +89,26 @@ class Agent(object):
             if(node.string==self.node.string):
                 break
         print("I am Out of the while loop",self.best_state)
-        
-        for i in range(-1,len(self.vocabulary)):
-            if i !=-1:
-                new_string = self.vocabulary[i] + self.best_state
-            else:
-                new_string = self.best_state
-            for j in range(-1,len(self.vocabulary)):
-                if j!=-1:
-                    currstring = new_string+self.vocabulary[j]
-                else:
-                    currstring = new_string
-                currcost=environment.compute_cost(currstring)
-                if self.node.cost>currcost:
-                    self.best_state = currstring
-                    self.node.cost=currcost
-                    self.node.string=currstring
-        print(self.best_state)
+        print(self.vocabulary)
+        for i in range(0,len(self.vocabulary)):
+            new_string = self.vocabulary[i] + self.node.string
+            new_cost = environment.compute_cost(new_string)
+            if(self.node.cost>new_cost):
+                self.node.cost=new_cost
+                self.best_state=new_string
+        self.node.string=self.best_state
+        print("I am out of the 1st for loop",self.best_state)
                 
+        for i in range(0,len(self.vocabulary)):
+            new_string = self.node.string+self.vocabulary[i]
+            new_cost = environment.compute_cost(new_string)
+            if(self.node.cost>new_cost):
+                self.node.cost=new_cost
+                self.best_state=new_string
+        self.node.string=self.best_state
+        print("I am out of the 2nd for loop",self.best_state)
+                
+        
             
             # node =self.node
             # currstring=node.string
