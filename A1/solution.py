@@ -30,63 +30,96 @@ class Node(object):
 
 class Agent(object):
     def __init__(self, phoneme_table, vocabulary) -> None:
-        self.phoneme_table = {value: key for key, values in phoneme_table.items() for value in values}
+        self.phoneme_table = {}
+        for key, values in phoneme_table.items():
+            for value in values:
+                if value not in self.phoneme_table:
+                    self.phoneme_table[value] = [key]
+                else:
+                    self.phoneme_table[value].append(key)
         self.vocabulary = vocabulary
         self.best_state = None
-        self.k = 3
+        self.k = 1
         self.heap = []
+        self.node = None
+
+    # def heap_push(self, node):
+    #     if len(self.heap) < self.k:
+    #         heapq.heappush(self.heap, node)
+    #     elif node.cost < self.heap[-1].cost:
+    #         self.heap[-1]=node
 
     def asr_corrector(self, environment):
         self.best_state = environment.init_state
         cost = environment.compute_cost(environment.init_state)
-        node = Node(environment.init_state, cost)
-        self.heap_push(node)
+        self.node = Node(environment.init_state, cost)
+        print(self.best_state)
         self.search(environment)
-        environment.best_state = self.best_state
 
-    def heap_push(self, node):
-        if len(self.heap) < self.k:
-            heapq.heappush(self.heap, node)
-        else:
-            heapq.heappushpop(self.heap, node)
+
 
     def search(self, environment):
         print(self.phoneme_table)
-        qw=0
-        while self.heap and qw<1000000:
-            print(qw)
-
-            node = heapq.heappop(self.heap)
+        isend=False
+        start=0
+        while isend==False:
+            node =self.node
+            flag1=False
+            print(self.best_state)
+          
             currstring=node.string
-            for i in range(len(currstring)):
+            for i in range(start,len(currstring)):
                 for key in self.phoneme_table:
                     if currstring[i:i+len(key)] == key:
                         for phoneme in self.phoneme_table[key]:
                             new_string = currstring[:i] + phoneme + currstring[i+len(key):]
                             new_cost = environment.compute_cost(new_string)
                             if(new_cost<node.cost):
-                                new_node = Node(new_string,new_cost)
-                                self.heap_push(new_node)
-            self.best_state = self.heap[0].string if self.heap else None
-            qw=qw+1
-
-        self.heap = [Node(self.best_state, environment.compute_cost(self.best_state))]
+                                self.best_state=new_string
+                                print(new_string)
+                                self.node=Node(new_string,new_cost)
+                                start=i
+                                flag1=True
+                                break
+                    if flag1:
+                        break
+                if flag1:
+                    break
+            
+            if(node.string==self.node.string):
+                break
+        print("I am Out of the while loop",self.best_state)
+        
+        for i in range(-1,len(self.vocabulary)):
+            if i !=-1:
+                new_string = self.vocabulary[i] + self.best_state
+            else:
+                new_string = self.best_state
+            for j in range(-1,len(self.vocabulary)):
+                if j!=-1:
+                    currstring = new_string+self.vocabulary[j]
+                else:
+                    currstring = new_string
+                currcost=environment.compute_cost(currstring)
+                if self.node.cost>currcost:
+                    self.best_state = currstring
+                    self.node.cost=currcost
+                    self.node.string=currstring
         print(self.best_state)
-        qw=0
-        while self.heap and qw<1000000:
-            print(qw)
-            node = heapq.heappop(self.heap)
-            currstring=node.string
-            for i in range(self.vocabulary.size):
-                new_string = self.vocabulary[i] + currstring
-                new_cost = environment.compute_cost(new_string)
-                if(new_cost<node.cost):
-                    new_node = Node(new_string,new_cost)
-                    self.heap_push(new_node)
-                new_string = currstring + self.vocabulary[i]
-                new_cost = environment.compute_cost(new_string)
-                if(new_cost<node.cost):
-                    new_node = Node(new_string,new_cost)
-                    self.heap_push(new_node)
-            self.best_state = self.heap[0].string if self.heap else None
-            qw=qw+1
+                
+            
+            # node =self.node
+            # currstring=node.string
+            # for i in range(self.vocabulary.size):
+            #     new_string = self.vocabulary[i] + currstring
+            #     new_cost = environment.compute_cost(new_string)
+            #     if(new_cost<node.cost):
+            #         new_node = Node(new_string,new_cost)
+            #         self.heap_push(new_node)
+            #     new_string = currstring + self.vocabulary[i]
+            #     new_cost = environment.compute_cost(new_string)
+            #     if(new_cost<node.cost):
+            #         new_node = Node(new_string,new_cost)
+            #         self.heap_push(new_node)
+            # self.best_state = self.heap[0].string if self.heap else None
+            # qw=qw+1
