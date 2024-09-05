@@ -1,0 +1,33 @@
+COL333 assignment1
+Name: Kanala sathya umesh chandra
+Entry Number: 2022CS11111
+Name: Girvar Patidar
+Entry Number: 2022CS11616
+
+Report on Automatic Speech Recognition (ASR) Correction Algorithm
+Introduction:
+The ASR correction algorithm is designed to correct errors in speech recognition systems. The algorithm takes a phoneme table and vocabulary 
+as input and outputs the corrected string.
+Algorithm:
+The algorithm used is a variant of the Hill Climbing search algorithm. Hill Climbing is a heuristic search algorithm that starts with an
+initial solution and iteratively applies small changes to find a better solution.
+Why Hill Climbing?
+Hill Climbing was chosen over other search algorithms like Beam Search for several reasons:
+    • Effectiveness: Hill Climbing is effective for finding local optima, which is sufficient for ASR correction.
+    • Flexibility: Hill Climbing allows for easy incorporation of domain-specific knowledge, such as phoneme tables and vocabulary.
+    • Computational Efficiency: Hill Climbing is computationally efficient, especially for smaller search spaces.
+In our search to handle large cases we even have minimum depth as there are two parts to the assignment we are taking adding vocabulary 
+in the second part of the assignment to give best answer as whole so we stop the Hill climb for phoenem  at particular depth and continue 
+towards vocabulary.In hill climbing we staop as soon as we encounter local minima.
+Why not Beam Search?
+Beam Search was not chosen because:
+    • Computational Cost: Beam Search can be computationally expensive, especially for larger search spaces.
+    • Limited Improvement: Beam Search may not find significantly better solutions than Hill Climbing for ASR correction.
+    • It feels overkill in beam search as storing all the K will not be usefull as the cost function as we gives more priority to the correct solution and it will be done in few steps so there will no need to travel sibilings of the tree
+Conclusion:
+The ASR correction algorithm using Hill Climbing has proven effective in correcting errors in speech recognition systems. Its simplicity, 
+effectiveness, flexibility, and computational efficiency make it a suitable choice for this task. While Beam Search may be more effective in 
+some cases, Hill Climbing provides a good balance of quality and efficiency for ASR correction.For vocabulary part we have taken maximium of 
+three sentences while substituting the word at start and for these three sentences we have added words at the backword to check the minimum error
+We have taken this step because we have observed some words get added even though when there was no need so we have taken precation to prevent 
+them from  happening.
