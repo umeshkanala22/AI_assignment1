@@ -42,10 +42,11 @@ class Agent(object):
                     if currstring[i:i+len(key)] == key:
                         for phoneme in self.phoneme_table[key]:
                             new_string = currstring[:i] + phoneme + currstring[i+len(key):]
+                            print(new_string)
                             new_cost = environment.compute_cost(new_string)
                             if(new_cost<node.cost):
                                 self.best_state=new_string
-                                print(new_string)
+                                print("my cost is low",new_string)
                                 self.node.string=new_string
                                 self.node.cost=new_cost
                                 flag1=True
