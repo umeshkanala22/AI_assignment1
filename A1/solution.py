@@ -37,7 +37,7 @@ class Agent(object):
             print(self.best_state)
           
             currstring=node.string
-            for i in range(start,len(currstring)):
+            for i in range(0,len(currstring)):
                 for key in self.phoneme_table:
                     if currstring[i:i+len(key)] == key:
                         for phoneme in self.phoneme_table[key]:
