@@ -30,9 +30,9 @@ class Agent(object):
 
     def search(self, environment):
         isend=False
-        start=0
         while isend==False:
             node =self.node
+            refstring=node.string
             flag1=False
             print(self.best_state)
           
@@ -46,8 +46,8 @@ class Agent(object):
                             if(new_cost<node.cost):
                                 self.best_state=new_string
                                 print(new_string)
-                                self.node=Node(new_string,new_cost)
-                                start=i-1
+                                self.node.string=new_string
+                                self.node.cost=new_cost
                                 flag1=True
                                 break
                     if flag1:
@@ -55,7 +55,7 @@ class Agent(object):
                 if flag1:
                     break
             
-            if(node.string==self.node.string):
+            if(refstring==self.node.string):
                 break
         print("I am Out of the while loop",self.best_state)
         for i in range(0,len(self.vocabulary)):
