@@ -52,7 +52,7 @@ class Agent(object):
             
             if(refstring==self.node.string):
                 break
-        print("I am Out of the while loop",self.best_state)
+    
         for i in range(0,len(self.vocabulary)):
             new_string = self.vocabulary[i] +" "+ self.node.string
             new_cost = environment.compute_cost(new_string)
@@ -60,7 +60,6 @@ class Agent(object):
                 self.node.cost=new_cost
                 self.best_state=new_string
         self.node.string=self.best_state
-        print("I am out of the 1st for loop",self.best_state)
                 
         for i in range(0,len(self.vocabulary)):
             new_string = self.node.string+ " "+self.vocabulary[i]
