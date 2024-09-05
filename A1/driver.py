@@ -91,21 +91,21 @@ def main():
     corrected_texts = []
     qw=0
     for sample in tqdm(data):
-        
-        audio = sample['audio']['array']
-        sr = sample['audio']['sampling_rate']
-        text = sample['text']
-        cost_model.set_audio(audio, sr)
-        environment = Environment(text, cost_model.get_loss, phoneme_table)
+        if qw<5:
+            audio = sample['audio']['array']
+            sr = sample['audio']['sampling_rate']
+            text = sample['text']
+            cost_model.set_audio(audio, sr)
+            environment = Environment(text, cost_model.get_loss, phoneme_table)
 
-        try:
-            agent.asr_corrector(environment)
-            pred = agent.best_state
-        except:
-            pred = None
+            try:
+                agent.asr_corrector(environment)
+                pred = agent.best_state
+            except:
+                pred = None
 
-        corrected_texts.append(pred)
-        qw=qw+1
+            corrected_texts.append(pred)
+            qw=qw+1
 
     with open(args.output_file, 'w') as fp:
         json.dump(corrected_texts, fp, indent=2)

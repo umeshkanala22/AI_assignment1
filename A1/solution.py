@@ -47,7 +47,6 @@ class Agent(object):
                 break
             flag = False
             trans = []
-            ndp = dp.copy()
             for i in range(n):
                 if not dp[i]:
                     if s[i] in transition:
