@@ -33,7 +33,6 @@ class Agent(object):
         while isend==False:
             node =self.node
             refstring=node.string
-            flag1=False
             print(self.best_state)
           
             currstring=node.string
@@ -42,19 +41,14 @@ class Agent(object):
                     if currstring[i:i+len(key)] == key:
                         for phoneme in self.phoneme_table[key]:
                             new_string = currstring[:i] + phoneme + currstring[i+len(key):]
-                            print(new_string)
                             new_cost = environment.compute_cost(new_string)
-                            if(new_cost<node.cost):
+                            if(new_cost<self.node.cost):
                                 self.best_state=new_string
                                 print("my cost is low",new_string)
                                 self.node.string=new_string
                                 self.node.cost=new_cost
-                                flag1=True
-                                break
-                    if flag1:
-                        break
-                if flag1:
-                    break
+                             
+                
             
             if(refstring==self.node.string):
                 break
